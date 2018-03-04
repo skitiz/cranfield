@@ -1,11 +1,13 @@
 from readers import read_queries, read_documents
 import math
+from nltk.corpus import stopwords
+from nltk import PorterStemmer as ps
+from nltk import SnowballStemmer as ss
 
 
 # ToDo
 # 1. Stemming (Porter)
 # 2. Stop Words
-# 3. Rewrite IDF and Cos
 
 inverted_index = {}
 doc_length = {}
@@ -114,8 +116,35 @@ def search_query(query):
         return calculate_tf_idf(indexed_tokens)
 
 
+def removeStopWords(tokens):
+    stopWords =  set(stopwords.words('english'))
+    str = []
+    for token in tokens:
+        if token not in stopWords:
+            str.append(token)
+    return str
+
+def stemming(tokens):
+    str =[]
+    # Porter Stemmer        # 0.60
+    # for token in tokens:
+    #     str.append(ps().stem(token))
+    # return str
+
+    # Snowball Stemmer      # 0.61 // nltk.org | How to stem.
+    stemmer = ss("english", ignore_stopwords=True)
+    for token in tokens:
+        str.append(stemmer.stem(token))
+
+    return str
+
+
 def tokenize(text):
-    return text.split(" ")
+    str = []
+    str = text.split(" ")
+    str = removeStopWords(str)
+    str = stemming(str)
+    return str
 
 
 def add_token_to_index(token, doc_id):
@@ -139,12 +168,8 @@ def add_to_index(document):
     docId = document['id']
     documentText = document['title']
     tokens = tokenize(documentText)
-
     body = tokenize(document['body'])
-
     tokens.extend(body)
-
-
     for token in tokens:
         add_token_to_index(token, docId)
 
