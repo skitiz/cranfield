@@ -1,4 +1,5 @@
 from readers import read_queries, read_documents
+import numpy as np
 import math
 from nltk.corpus import stopwords
 from nltk import PorterStemmer as ps
@@ -6,14 +7,14 @@ from nltk import SnowballStemmer as ss
 
 
 # ToDo
-# 1. Stemming (Porter)
-# 2. Stop Words
+# 1. Synonymns
+# 2. Figure out what queries are causing a problem and address that.
 
 inverted_index = {}
 doc_length = {}
 
 # Find the # of documents in the corpus.
-max = len(read_documents()) + 1
+totalDocs = len(read_documents()) + 1
 
 # Creating a master dictionary to store the docId and IDF value.
 masterDictionary = {}
@@ -54,10 +55,14 @@ def tf(freq):
     return 1 + math.log(float(freq))
 
 def idf(freq):
-    return math.log((max-1) / float(freq))
+    return math.log((totalDocs-1) / float(freq))
 
 def calculate_tf_idf(query):
     wordCount = {}
+    scores = np.zeros(totalDocs)
+    length =  np.zeros(totalDocs)
+    Qlength = 0
+
     wordCount[query[0]] = 1
     uniqueWords =  [query[0]]
 
@@ -67,10 +72,6 @@ def calculate_tf_idf(query):
         else:
             wordCount[token] = 1
             uniqueWords.append(token)
-
-    scores = [0] * max
-    length = [0] * max
-    Qlength = 0
 
     for token in uniqueWords:
         documents = inverted_index[token]
