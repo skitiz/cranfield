@@ -5,7 +5,8 @@
 # 1. Implemented various forms of normalization, stopwords and other small things.
 #  Didn't really make a difference to the ndcg score.
 # 2. Got rid of the first attempt, started from scratch to tackle tf-idf as it would make the bulk of the difference.
-# 3. Finally got it down after weeks of effort and then struggled with cosine similarity. Found the pseudocode in the book which made life much simpler.
+# 3. Finally got it down after weeks of effort and then struggled with cosine similarity. Found the pseudocode in the book 
+# which made life much simpler.
 # 4. Implemented tf-idf coupled with cosine similarity and reached a score of 0.61.
 # 5. Tried two different stemmers. Kept SnowballStemmer cause it had better results.
 # 6. Tried using stopwords but it dropped by ndcg score. Maybe I need a custom stopwords library for this.
@@ -14,19 +15,23 @@
 # 9. Finish
 #
 # What could I have done if I had more time?
-# 1. Probably figure out a way to tackle synonyms. When I tried to figure out which queries had a lower score, they were all jargon to the dataset.
+# 1. Probably figure out a way to tackle synonyms. When I tried to figure out which queries had a lower score, they were 
+# all jargon to the dataset.
 # 2. Try out LM, just to see the difference.
 
 # Changes in ndcg score in chronological order:
-# 1. custom stopwords, removing special characters, AND to OR.    | Nothing too major, got it up to   0.198. * Note : First Discussion Post.
+# 1. custom stopwords, removing special characters, AND to OR.    | Nothing too major, got it up to   0.198. 
+# * Note : First Discussion Post.
 # 2. Implemented tf-idf.                                          | Major, got the score up to        0.49.
-# 3. Made a separate function to merge tf-idf and cosine.         | Bulk of my score.                 0.61   * Note : Discussion Post Update.
+# 3. Made a separate function to merge tf-idf and cosine.         | Bulk of my score.                 0.61   
+# * Note : Discussion Post Update.
 # 4. StopWords, Stemming and Special Chars.                       | Increased my score to a           0.63
 # 5. BM 25                                                        | Decreased the score to            0.49
 
 
 # Before I get flagged for plagirism, I'm gonna list every possible source I've used as reference.
-# 1. Implementation of the cosine similarity code, is based off the psuedocode in the book. Kept the same variable names and structure.
+# 1. Implementation of the cosine similarity code, is based off the psuedocode in the book. 
+#    Kept the same variable names and structure.
 # 2. https://www.geeksforgeeks.org/removing-stop-words-nltk-python/
 # 3. http://www.nltk.org/howto/stem.html
 # 4. Special characters isAlNum() taken from a StackOverflow post.
