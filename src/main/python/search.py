@@ -65,6 +65,29 @@ def calculate_tf_idf(query):
     rankings = ranking(scores, Qlength, length)
     return [i[0] for i in sorted(rankings, key=lambda tup: tup[1], reverse=True)]
 
+
+# Calculating TF-IDF Scores.
+def calculate_idf(query):
+    uniqueList = {}
+    score = np.zeros(totalDocs)
+    rankings = []
+    idfSc = 0
+    for token in query:
+        if token not in uniqueList:
+            uniqueList[token] = 1
+        else:
+            uniqueList[token] += 1
+    for token in uniqueList:
+        documents = inverted_index[token]
+        for document in documents:
+            docId = document[0]
+            freq = document[1]
+            idfSc = tf(uniqueList[token]) * idf(freq)
+            score[docId] += idfSc
+    for i in range(0, len(score)):
+        rankings.append([i, score[i]])
+    return[i[0] for i in sorted(rankings, key=lambda tup: tup[1], reverse=True)]
+
 # Calculate tf_idf scores for query.
 def search_query(query):
     tokens = tokenize(str(query['query']))
@@ -74,8 +97,8 @@ def search_query(query):
     elif len(indexed_tokens) == 1:
         return inverted_index[indexed_tokens[0]]
     else:
-        # return rank_postings(indexed_tokens)
         return calculate_tf_idf(indexed_tokens)
+        # return calculate_idf(indexed_tokens)
 
 # https://www.geeksforgeeks.org/removing-stop-words-nltk-python/ | Stop Words
 def stop_words(tokens):
@@ -113,11 +136,11 @@ def remove_special_chars(tokens):
 # Tokenize the text passed.
 def tokenize(text):
     str = []
-    str = text.split(" ")          # 0.610 with TF-IDF and Cosine.
+    str = text.split(" ")          # 0.49 with just TF-IDF | 0.610 with TF-IDF and Cosine.
     str = stop_words(str)          # 0.611 with nltk.corpus
     # str = porter_stemmer(str)    # 0.629 with PorterStemmer
     str = snowball_stemmer(str)    # 0.63 with SnowballStemmer
-    str = remove_special_chars(str) # 0.54 Drops the scores.
+    # str = remove_special_chars(str) # 0.54 Drops the scores.
     return str
 
 # Add the token to the inverted index.
