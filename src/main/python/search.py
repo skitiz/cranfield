@@ -1,18 +1,20 @@
 # Kshitij Bantupalli
 # Current NCDG Score = 0.63
 # How did I approach this?
-# 1. Implemented various forms of normalization, stopwords and other small things. Didn't really make a difference to the ndcg score.
+# 1. Implemented various forms of normalization, stopwords and other small things.
+#  Didn't really make a difference to the ndcg score.
 # 2. Got rid of the first attempt, started from scratch to tackle tf-idf as it would make the bulk of the difference.
 # 3. Finally got it down after weeks of effort and then struggled with cosine similarity. Found the pseudocode in the book which made life much simpler.
 # 4. Implemented tf-idf coupled with cosine similarity and reached a score of 0.61.
 # 5. Tried two different stemmers. Kept SnowballStemmer cause it had better results.
 # 6. Tried using stopwords but it dropped by ndcg score. Maybe I need a custom stopwords library for this.
 # 7. Tried removing special chars, dropped my score again. Commented it out.
-# 8. Finish.
+# 8. Implemented Probabilistic Model Okapi BM-25. Has a score of 0.49.
+# 9. Finish
 #
 # What could I have done if I had more time?
 # 1. Probably figure out a way to tackle synonyms. When I tried to figure out which queries had a lower score, they were all jargon to the dataset.
-# 2. Try out LM and Probabilistic Models, just to see the difference.
+# 2. Try out LM, just to see the difference.
 
 # Changes in ndcg score in chronological order:
 # 1. custom stopwords, removing special characters, AND to OR.    | Nothing too major, got it up to   0.198. * Note : First Discussion Post.
@@ -114,6 +116,24 @@ def calculate_idf(query):
         rankings.append([i, score[i]])
     return[i[0] for i in sorted(rankings, key=lambda tup: tup[1], reverse=True)]
 
+# Probabilistic Model
+def bm_25(query):
+    unique = []
+    scores = np.zeros(totalDocs)
+    rankings = []
+    for token in query:
+        if token not in unique:
+            unique.append(token)
+    for token in unique:
+        documents = inverted_index[token]
+        for document in documents:
+            docId = document[0]
+            freq = document[1]
+            scores[docId] += idf(freq)
+    for i in range(0, len(scores)):
+        rankings.append([i, scores[i]])
+    return [i[0] for i in sorted(rankings, key=lambda tup: tup[1], reverse=True)]
+
 # Calculate tf_idf scores for query.
 def search_query(query):
     tokens = tokenize(str(query['query']))
@@ -123,6 +143,7 @@ def search_query(query):
     elif len(indexed_tokens) == 1:
         return inverted_index[indexed_tokens[0]]
     else:
+        # return bm_25(indexed_tokens)
         return calculate_tf_idf(indexed_tokens)
         # return calculate_idf(indexed_tokens)
 
