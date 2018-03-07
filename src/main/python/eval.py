@@ -59,7 +59,7 @@ if __name__ == '__main__':
             dcg = calculate_dcg(query, documents)
             idcg = ideal_ndcg[str(query['query number'])]
             ndcg = dcg / idcg
-            if ndcg < 0.3:
+            if ndcg < 0.2:
                 # print ("dcg={}, ideal={}, ndcg={}", dcg, idcg, ndcg)
                 print("Query:{} and Results:{}", query, ndcg)
             sum = sum + ndcg
