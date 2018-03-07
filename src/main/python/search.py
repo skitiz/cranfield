@@ -183,7 +183,7 @@ def remove_special_chars(tokens):
 # Tokenize the text passed.
 def tokenize(text):
     str = []
-    str = text.split(" ")          # 0.49 with just TF-IDF | 0.610 with TF-IDF and Cosine.
+    str = text.split(" ")          # 0.49 with just TF-IDF | 0.610 with TF-IDF and Cosine | 0.49 with BM.
     str = stop_words(str)          # 0.611 with nltk.corpus
     # str = porter_stemmer(str)    # 0.629 with PorterStemmer
     str = snowball_stemmer(str)    # 0.63 with SnowballStemmer
