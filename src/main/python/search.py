@@ -66,7 +66,7 @@ def calculate_tf_idf(query):
     return [i[0] for i in sorted(rankings, key=lambda tup: tup[1], reverse=True)]
 
 
-# Calculating TF-IDF Scores.
+# The original TF-IDF function.
 def calculate_idf(query):
     uniqueList = {}
     score = np.zeros(totalDocs)
