@@ -21,6 +21,7 @@
 # 2. Implemented tf-idf.                                          | Major, got the score up to        0.49.
 # 3. Made a separate function to merge tf-idf and cosine.         | Bulk of my score.                 0.61   * Note : Discussion Post Update.
 # 4. StopWords, Stemming and Special Chars.                       | Increased my score to a           0.63
+# 5. BM 25                                                        | Decreased the score to            0.49
 
 
 # Before I get flagged for plagirism, I'm gonna list every possible source I've used as reference.
