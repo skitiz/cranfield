@@ -63,8 +63,7 @@ def calculate_tf_idf(query):
             length[docId] += vectorDocument**2
             scores[docId] += vectorDocument * vectorQuery
     rankings = ranking(scores, Qlength, length)
-    rankings.sort(key=lambda tup: tup[1], reverse=True)
-    return [i[0] for i in rankings]
+    return [i[0] for i in sorted(rankings, key=lambda tup: tup[1], reverse=True)]
 
 # Calculate tf_idf scores for query.
 def search_query(query):
