@@ -102,6 +102,14 @@ def snowball_stemmer(tokens):
         str.append(stemmer.stem(token))
     return str
 
+# Removes non alphanumeric characters.
+def remove_special_chars(tokens):
+    str = []
+    for token in tokens:
+        if token.isalnum():
+           str.append(token)
+    return str
+
 # Tokenize the text passed.
 def tokenize(text):
     str = []
@@ -109,6 +117,7 @@ def tokenize(text):
     str = stop_words(str)          # 0.611 with nltk.corpus
     # str = porter_stemmer(str)    # 0.629 with PorterStemmer
     str = snowball_stemmer(str)    # 0.63 with SnowballStemmer
+    str = remove_special_chars(str) # 0.54 Drops the scores.
     return str
 
 # Add the token to the inverted index.
