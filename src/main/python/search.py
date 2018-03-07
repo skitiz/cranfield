@@ -1,16 +1,42 @@
 # Kshitij Bantupalli
-# Text Mining
+# Current NCDG Score = 0.63
+# How did I approach this?
+# 1. Implemented various forms of normalization, stopwords and other small things. Didn't really make a difference to the ndcg score.
+# 2. Got rid of the first attempt, started from scratch to tackle tf-idf as it would make the bulk of the difference.
+# 3. Finally got it down after weeks of effort and then struggled with cosine similarity. Found the pseudocode in the book which made life much simpler.
+# 4. Implemented tf-idf coupled with cosine similarity and reached a score of 0.61.
+# 5. Tried two different stemmers. Kept SnowballStemmer cause it had better results.
+# 6. Tried using stopwords but it dropped by ndcg score. Maybe I need a custom stopwords library for this.
+# 7. Tried removing special chars, dropped my score again. Commented it out.
+# 8. Finish.
+#
+# What could I have done if I had more time?
+# 1. Probably figure out a way to tackle synonyms. When I tried to figure out which queries had a lower score, they were all jargon to the dataset.
+# 2. Try out LM and Probabilistic Models, just to see the difference.
 
-from readers import read_queries, read_documents
-import numpy as np
-import math
-from nltk.corpus import stopwords
-from nltk.stem.porter import *
-from nltk.stem.snowball import SnowballStemmer
+# Changes in ndcg score in chronological order:
+# 1. custom stopwords, removing special characters, AND to OR.    | Nothing too major, got it up to   0.198. * Note : First Discussion Post.
+# 2. Implemented tf-idf.                                          | Major, got the score up to        0.49.
+# 3. Made a separate function to merge tf-idf and cosine.         | Bulk of my score.                 0.61   * Note : Discussion Post Update.
+# 4. StopWords, Stemming and Special Chars.                       | Increased my score to a           0.63
 
 
+# Before I get flagged for plagirism, I'm gonna list every possible source I've used as reference.
+# 1. Implementation of the cosine similarity code, is based off the psuedocode in the book. Kept the same variable names and structure.
+# 2. https://www.geeksforgeeks.org/removing-stop-words-nltk-python/
+# 3. http://www.nltk.org/howto/stem.html
+# 4. Special characters isAlNum() taken from a StackOverflow post.
+
+
+from readers import read_queries, read_documents    # Importing the corpus to read.
+import numpy as np                                  # Used this to set the length of scores and length in cosine.
+import math                                         # For the tf, idf scores.
+from nltk.corpus import stopwords                   # Stopwords.
+from nltk.stem.porter import *                      # Porter Stemmer
+from nltk.stem.snowball import SnowballStemmer      # Snowball Stemmer.
+
+# Declare the global variables. totalDocs has the # of docs in corpus.
 inverted_index = {}
-doc_length = {}
 totalDocs = len(read_documents()) + 1
 
 #Removes non indexed tokens.
@@ -100,7 +126,7 @@ def search_query(query):
         return calculate_tf_idf(indexed_tokens)
         # return calculate_idf(indexed_tokens)
 
-# https://www.geeksforgeeks.org/removing-stop-words-nltk-python/ | Stop Words
+# Stop Words
 def stop_words(tokens):
     str = []
     stop_words = set(stopwords.words('english'))
@@ -109,7 +135,7 @@ def stop_words(tokens):
             str.append(token)
     return str
 
-# http://www.nltk.org/howto/stem.html
+# Porter Stemmer.
 def porter_stemmer(tokens):
     stemmer = PorterStemmer()
     str = []
@@ -117,7 +143,7 @@ def porter_stemmer(tokens):
         str.append(stemmer.stem(token))
     return str
 
-# http://www.nltk.org/howto/stem.html
+# Snowball Stemmer.
 def snowball_stemmer(tokens):
     str = []
     stemmer = SnowballStemmer("english", ignore_stopwords=True)
@@ -125,7 +151,7 @@ def snowball_stemmer(tokens):
         str.append(stemmer.stem(token))
     return str
 
-# Removes non alphanumeric characters.
+# Removes non alphanumeric characters OR special characters basically.
 def remove_special_chars(tokens):
     str = []
     for token in tokens:
