@@ -38,7 +38,7 @@
 
 
 from readers import read_queries, read_documents    # Importing the corpus to read.
-import numpy as np                                  # Used this to set the length of scores and length in cosine.
+import numpy as np                                  # For np.zeros()
 import math                                         # For the tf, idf scores.
 from nltk.corpus import stopwords                   # Stopwords.
 from nltk.stem.porter import *                      # Porter Stemmer
