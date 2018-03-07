@@ -1,5 +1,6 @@
 # Kshitij Bantupalli
 # Current NCDG Score = 0.63
+# 
 # How did I approach this?
 # 1. Implemented various forms of normalization, stopwords and other small things.
 #  Didn't really make a difference to the ndcg score.
