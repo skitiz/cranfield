@@ -81,7 +81,6 @@ def calculate_tf_idf(query):
     rankings = ranking(scores, Qlength, length)
     return [i[0] for i in sorted(rankings, key=lambda tup: tup[1], reverse=True)]
 
-
 # The original TF-IDF function.
 def calculate_idf(query):
     uniqueList = {}
@@ -100,6 +99,7 @@ def calculate_idf(query):
             freq = document[1]
             idfSc = tf(uniqueList[token]) * idf(freq)
             score[docId] += idfSc
+
     for i in range(0, len(score)):
         rankings.append([i, score[i]])
     return[i[0] for i in sorted(rankings, key=lambda tup: tup[1], reverse=True)]
